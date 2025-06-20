@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERSÖN AI - Security Solutions</title>
+    <!-- Favicon link -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800;
+            min-height: 100vh;
+        }
+        .product-card {
+            @apply transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+        }
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensure product image fits well */
+            border-radius: 0.25rem; /* rounded */
+        }
+        .product-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card-link:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation Bar (Consistent with index.html) -->
+    <nav class="bg-white shadow-sm fixed w-full z-10 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto mr-2" src="logo.png" alt="PERSÖN AI Logo" onerror="this.onerror=null;this.src='https://placehold.co/32x32/cccccc/000000?text=LOGO';">
+                        <span class="text-xl font-bold text-gray-900">PERSÖN AI</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <!-- Products link pointing to index.html to use its dropdown -->
+                    <a href="index.html" class="flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none px-4 py-2 rounded-md">
+                        Products
+                    </a>
+                    <a href="docs.html" class="ml-4 text-sm font-medium text-gray-700 hover:text-blue-600">Documentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header/Hero for Security Solutions -->
+    <header class="bg-indigo-700 text-white py-20 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight mb-4">
+                Advanced Security Solutions
+            </h1>
+            <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                Discover our range of physical security products designed for robust protection and intelligent surveillance.
+            </p>
+        </div>
+    </header>
+
+    <!-- Products Grid Section -->
+    <section class="py-16 sm:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                <!-- Product cards will be injected here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Consistent with other pages) -->
+    <footer class="bg-gray-900 text-gray-400 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-sm">
+            <div class="mb-4 md:mb-0">
+                <p>&copy; <span id="currentYear"></span> PERSÖN AI. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="docs.html" class="hover:text-white">Documentation</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Product Data Array for Physical Products - EDIT THESE VARIABLES
+        const products = [
+            {
+                id: 'smart-doorbell',
+                name: 'Persön Personnelles',
+                imagePath: 'ProductFiles/smart-doorbell.png', // Relative to SecuritySolutions.html
+                shortDescription: 'Intelligent doorbell with facial recognition and two-way audio.',
+                price: '$199.99',
+                detailPageUrl: 'ProductFiles/personnelles.html'
+            },
+            {
+                id: 'outdoor-ai-camera',
+                name: 'Persön De plein air',
+                imagePath: 'ProductFiles/outdoor-camera.png', // Relative to SecuritySolutions.html
+                shortDescription: 'Weatherproof camera with integrated AI analytics.',
+                price: '$299.99',
+                detailPageUrl: 'ProductFiles/depleinair.html'
+            },
+            {
+                id: 'indoor-ai-camera',
+                name: 'Persön en salle',
+                imagePath: 'ProductFiles/indoor-camera.png', // Relative to SecuritySolutions.html
+                shortDescription: 'Compact indoor camera with human detection and privacy modes.',
+                price: '$129.99',
+                detailPageUrl: 'ProductFiles/ensalle.html'
+            },
+            {
+                id: 'nvr-system',
+                name: 'Persön résolution',
+                imagePath: 'ProductFiles/nvr-system.png', // Relative to SecuritySolutions.html
+                shortDescription: 'Network Video Recorder with advanced AI processing capabilities.',
+                price: '$599.99',
+                detailPageUrl: 'ProductFiles/résolution.html'
+            },
+            {
+                id: 'smart-lock-integration',
+                name: 'Persön Vision par ordinateur',
+                imagePath: 'ProductFiles/smart-lock.png', // Relative to SecuritySolutions.html
+                shortDescription: 'Kit to create your own ai computer vision camera.',
+                price: '$79.99',
+                detailPageUrl: 'ProductFiles/smart-lock-integration.html'
+            },
+            {
+                id: 'Persön Sonnette',
+                name: 'AI-Enhanced Alarm Panel',
+                imagePath: 'ProductFiles/alarm-panel.png', // Relative to SecuritySolutions.html
+                shortDescription: 'High quality, 4K doorbell with high quality protection features.',
+                price: '$349.99',
+                detailPageUrl: 'ProductFiles/alarm-panel-ai.html'
+            }
+        ];
+
+        const productGrid = document.getElementById('product-grid');
+
+        // Function to create a product card HTML for Security Solutions
+        function createProductCard(product) {
+            const cardLink = document.createElement('a');
+            cardLink.href = product.detailPageUrl;
+            cardLink.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow-md', 'product-card', 'cursor-pointer', 'flex', 'flex-col', 'items-center', 'text-center', 'product-card-link');
+
+            cardLink.innerHTML = `
+                <div class="flex items-center justify-center w-full h-48 rounded bg-gray-100 mb-4 product-image-container">
+                    <img src="${product.imagePath}" alt="${product.name} Image" onerror="this.onerror=null;this.src='https://placehold.co/200x192/cccccc/000000?text=${product.name.replace(/\s/g, '+')}';">
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">${product.name}</h3>
+                <p class="text-gray-600 text-sm mb-3 flex-grow">${product.shortDescription}</p>
+                <p class="text-2xl font-bold text-blue-600 mt-auto">${product.price}</p>
+            `;
+            return cardLink;
+        }
+
+        // Populate the product grid
+        products.forEach(product => {
+            const card = createProductCard(product);
+            productGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

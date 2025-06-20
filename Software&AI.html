@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERSÖN AI - Software & AI Products</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to ensure Inter font is applied */
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 text-gray-800;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+        }
+        /* Custom styles for card hover effect */
+        .product-card {
+            @apply transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+        }
+        /* Ensure image in icon div fills its container */
+        .product-icon-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the image fits within the container without cropping */
+        }
+        /* Remove underline from product card links */
+        .product-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card-link:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-white shadow-sm fixed w-full z-10 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto mr-2" src="logo.png" alt="PERSÖN AI Logo" onerror="this.onerror=null;this.src='https://placehold.co/32x32/cccccc/000000?text=LOGO';">
+                        <span class="text-xl font-bold text-gray-900">PERSÖN AI</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 focus:outline-none px-4 py-2 rounded-md">
+                        Products
+                    </a>
+                    <a href="docs.html" class="ml-4 text-sm font-medium text-gray-700 hover:text-blue-600">Documentation</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-blue-600 text-white py-20 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight mb-4">
+                Software & AI Solutions
+            </h1>
+            <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                Explore our advanced AI models and software modules designed to power the next generation of human recognition.
+            </p>
+        </div>
+    </header>
+
+    <section class="py-16 sm:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-sm">
+            <div class="mb-4 md:mb-0">
+                <p>&copy; <span id="currentYear"></span> PERSÖN AI. All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="docs.html" class="hover:text-white">Documentation</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dynamically set the current year in the footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Product Data Array - EDIT THESE VARIABLES TO CUSTOMIZE YOUR PRODUCTS
+        // The `detailPageUrl` should point to the respective HTML file in the ProductFiles folder
+        const products = [
+            {
+                id: 'facial-recognition-module',
+                name: 'Persön 1 équilibre',
+                iconPath: 'ProductFiles/1.png', // Corrected path
+                shortDescription: 'A highly advanced model. Built with speed and intelligence',
+                detailPageUrl: 'ProductFiles/1équilibre.html'
+            },
+            {
+                id: 'gait-analysis-behavioral-ai',
+                name: 'Persön 1 POWERHOUSE',
+                iconPath: 'ProductFiles/2.png', // Corrected path
+                shortDescription: 'A more powerful and accurate human detection model.',
+                detailPageUrl: 'ProductFiles/1POWERHOUSE.html'
+            },
+            {
+                id: 'intrusion-detection-system',
+                name: 'Persön 2 équilibre',
+                iconPath: 'ProductFiles/3.png', // Corrected path
+                shortDescription: 'Entry level detection model, with similar power to the Persön 1 équilibre.',
+                detailPageUrl: 'ProductFiles/2équilibre.html'
+            },
+            {
+                id: 'object-classification-api',
+                name: 'Persön 2 POWERHOUSE',
+                iconPath: 'ProductFiles/4.png', // Corrected path
+                shortDescription: 'A SOTA model, our smartest model ever developed.',
+                detailPageUrl: 'ProductFiles/2POWERHOUSE.html'
+            },
+             {
+                id: 'anonymization-suite',
+                name: 'Privacy Anonymization Suite',
+                iconPath: 'ProductFiles/anonymization-icon.png', // Corrected path
+                shortDescription: 'Ensures data privacy by anonymizing identifiable information in video.',
+                detailPageUrl: 'ProductFiles/anonymization-suite.html'
+            },
+            {
+                id: 'metadata-analytics-engine',
+                name: 'Metadata Analytics Engine',
+                iconPath: 'ProductFiles/metadata-analytics-icon.png', // Corrected path
+                shortDescription: 'Extracts and analyzes crucial metadata from video streams.',
+                detailPageUrl: 'ProductFiles/metadata-analytics-engine.html'
+            },
+            {
+                id: 'edge-computing-optimizer',
+                name: 'Edge Computing Optimizer',
+                iconPath: 'ProductFiles/edge-computing-icon.png', // Corrected path
+                shortDescription: 'Optimizes AI processing for on-device and edge deployments.',
+                detailPageUrl: 'ProductFiles/edge-computing-optimizer.html'
+            },
+            {
+                id: 'anomaly-detection-framework',
+                name: 'Anomaly Detection Framework',
+                iconPath: 'ProductFiles/anomaly-detection-icon.png', // Corrected path
+                shortDescription: 'Identifies unusual patterns and outliers in surveillance data.',
+                detailPageUrl: 'ProductFiles/anomaly-detection-framework.html'
+            },
+            {
+                id: 'custom-model-training-kit',
+                name: 'Custom Model Training Kit',
+                iconPath: 'ProductFiles/custom-training-icon.png', // Corrected path
+                shortDescription: 'Tools to train AI models for specific recognition tasks.',
+                detailPageUrl: 'ProductFiles/custom-model-training-kit.html'
+            }
+        ];
+
+        const productGrid = document.getElementById('product-grid');
+
+        // Function to create a product card HTML
+        function createProductCard(product) {
+            const cardLink = document.createElement('a'); // Changed to <a> tag
+            cardLink.href = product.detailPageUrl; // Set the href to the product's detail page
+            cardLink.classList.add('bg-white', 'p-6', 'rounded-lg', 'shadow-md', 'product-card', 'cursor-pointer', 'flex', 'flex-col', 'items-center', 'text-center', 'product-card-link'); // Added product-card-link class
+
+            cardLink.innerHTML = `
+                <div class="flex items-center justify-center h-20 w-20 rounded-lg bg-blue-50 p-3 mb-4 product-icon-container">
+                    <img src="${product.iconPath}" alt="${product.name} Icon" onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=ICON';">
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">${product.name}</h3>
+                <p class="text-gray-600 text-sm flex-grow">${product.shortDescription}</p>
+            `;
+            return cardLink; // Return the <a> element
+        }
+
+        // Populate the product grid
+        products.forEach(product => {
+            const card = createProductCard(product);
+            productGrid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

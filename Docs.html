@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERSÖN AI Docs</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- General Resets & Variables --- */
+        :root {
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-padding: 30px;
+            --bg-color-body: #f7f9fc;
+            --bg-color-sidebar: #ffffff;
+            --bg-color-header: #ffffff;
+            --bg-color-content: #ffffff;
+            --text-color-primary: #333333;
+            --text-color-secondary: #666666;
+            --link-color: #007bff;
+            --link-hover-color: #0056b3;
+            --border-color: #eceff1;
+            --shadow-color: rgba(0, 0, 0, 0.04);
+            --accent-color: #007bff;
+            --accent-color-light: #e6f2ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color-primary);
+            background-color: var(--bg-color-body);
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background-color: var(--bg-color-sidebar);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 2px 0 5px var(--shadow-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: hidden;
+            border-bottom-right-radius: 8px;
+        }
+
+        .sidebar-header {
+            padding: 0 var(--content-padding);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color-primary);
+            border-bottom: 1px solid var(--border-color);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header a {
+            text-decoration: none;
+            color: inherit;
+            display: flex; /* Allow logo and text to be side-by-side */
+            align-items: center;
+        }
+
+        .sidebar-header .logo-img { /* Style for the logo inside sidebar header */
+            height: 30px; /* Adjust as needed */
+            width: auto;
+            margin-right: 10px;
+            border-radius: 4px; /* Subtle roundness */
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding-left: 15px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0px;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 10px var(--content-padding);
+            text-decoration: none;
+            color: var(--text-color-primary);
+            font-size: 0.92rem;
+            transition: background-color 0.2s ease, color 0.2s ease, font-weight 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-radius: 6px;
+            margin: 0 10px;
+            width: calc(100% - 20px);
+        }
+
+        .sidebar-nav a.chapter-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: var(--accent-color-light);
+            color: var(--link-color);
+        }
+
+        /* Active states */
+        .sidebar-nav li.active > a,
+        .sidebar-nav li.active-parent > a {
+            background-color: var(--accent-color);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .sidebar-nav ul li.active > a {
+            background-color: var(--accent-color-light);
+            color: var(--link-color);
+            font-weight: 600;
+            box-shadow: none;
+        }
+
+        .sidebar-nav a .icon {
+            margin-right: 10px;
+            font-size: 1rem;
+            color: var(--text-color-secondary);
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-nav a:hover .icon,
+        .sidebar-nav li.active > a .icon,
+        .sidebar-nav li.active-parent > a .icon {
+            color: inherit;
+        }
+
+        /* --- Main Content Area Wrapper (Handles the main scroll) --- */
+        .main-content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: var(--bg-color-content);
+            border-top-left-radius: 8px;
+        }
+
+        /* --- Header / Top Bar --- */
+        .header {
+            flex-shrink: 0;
+            height: var(--header-height);
+            background-color: var(--bg-color-header);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--content-padding);
+            z-index: 1000;
+        }
+
+        .header-title a {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-color-primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .header-title a:hover {
+            color: var(--link-color);
+        }
+
+        .main-content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: var(--content-padding);
+            position: relative;
+        }
+
+        .main-content {
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100%;
+        }
+
+        .main-content h1, .main-content h2, .main-content h3, .main-content h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            font-weight: 600;
+        }
+
+        .main-content h1 { font-size: 2.2rem; }
+        .main-content h2 { font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em;}
+        .main-content h3 { font-size: 1.4rem; }
+        .main-content p {
+            margin-bottom: 1em;
+        }
+
+        .main-content ul, .main-content ol {
+            margin-left: 25px;
+            margin-bottom: 1em;
+        }
+
+        .main-content pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 15px;
+            margin-bottom: 1em;
+            overflow-x: auto;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .main-content code {
+            font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+            background-color: #e9e9e9;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .main-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+        }
+
+        .main-content table, .main-content th, .main-content td {
+            border: 1px solid var(--border-color);
+        }
+
+        .main-content th, .main-content td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .main-content th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+
+        .main-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1em 0;
+            border-radius: 4px;
+        }
+
+        /* --- Scrollbar Customization (Webkit) --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #aab8c2;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            :root {
+                --sidebar-width: 250px;
+                --content-padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html, body {
+                overflow: auto;
+            }
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: none;
+                border-bottom-right-radius: 0;
+            }
+            .sidebar-header {
+                font-size: 1.2rem;
+                justify-content: center;
+            }
+            .sidebar-header .logo-img { /* Adjust logo size for smaller screens if needed */
+                height: 25px;
+            }
+
+            .sidebar-nav {
+                max-height: 240px;
+                overflow-y: auto;
+                padding-top: 10px;
+            }
+
+            .main-content-area {
+                height: auto;
+                border-top-left-radius: 0;
+            }
+            .header {
+                height: auto;
+                padding: 10px 20px;
+                justify-content: center;
+            }
+            .header-title {
+                font-size: 1.1rem;
+            }
+            .header-nav {
+                display: none;
+            }
+
+            .main-content-wrapper {
+                overflow-y: visible;
+                padding: 20px;
+            }
+        }
+
+        /* --- Print Styles --- */
+        @media print {
+            body {
+                background-color: #fff;
+                color: #000;
+                overflow: visible !important;
+            }
+            .header, .sidebar {
+                display: none !important;
+            }
+            .main-content-area {
+                height: auto !important;
+                flex-direction: row !important;
+            }
+            .main-content-wrapper {
+                overflow-y: visible !important;
+                padding: 0 !important;
+                flex-grow: 1;
+            }
+            .main-content {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            a {
+                text-decoration: underline;
+                color: #000;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <!-- Logo added here -->
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <img class="logo-img" src="logo.png" alt="PERSÖN AI Logo" onerror="this.onerror=null;this.src='https://placehold.co/30x30/cccccc/000000?text=LOGO';">
+                PERSÖN Docs
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul id="sidebar-nav">
+                <li data-section-id="introduction"><a href="#introduction" class="chapter-title">1. Introduction</a></li>
+                <li data-section-id="getting-started">
+                    <a href="#getting-started" class="chapter-title">2. Getting Started</a>
+                    <ul>
+                        <li data-section-id="prerequisites"><a href="#prerequisites">2.1. Prerequisites</a></li>
+                        <li data-section-id="installation"><a href="#installation">2.2. Installation</a></li>
+                        <li data-section-id="running-first-example"><a href="#running-first-example">2.3. Running Your First Example</a></li>
+                    </ul>
+                </li>
+                <li data-section-id="core-concepts">
+                    <a href="#core-concepts" class="chapter-title">3. Core Concepts</a>
+                    <ul>
+                        <li data-section-id="architecture"><a href="#architecture">3.1. Architecture Overview</a></li>
+                        <li data-section-id="data-models"><a href="#data-models">3.2. Data Models</a></li>
+                        <li data-section-id="api-design"><a href="#api-design">3.3. API Design</a></li>
+                    </ul>
+                </li>
+                <li data-section-id="advanced-topics"><a href="#advanced-topics" class="chapter-title">4. Advanced Topics</a></li>
+                <li data-section-id="troubleshooting"><a href="#troubleshooting">5. Troubleshooting</a></li>
+                <li data-section-id="faq"><a href="#faq">6. FAQ</a></li>
+                <li data-section-id="contributing"><a href="#contributing">7. Contributing</a></li>
+                <li data-section-id="license"><a href="#license">8. License</a></li>
+                <li data-section-id="about"><a href="#about">About</a></li>
+                <li data-section-id="api-reference"><a href="#api-reference">API Reference</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area Wrapper -->
+    <div class="main-content-area">
+        <!-- Header / Top Bar -->
+        <header class="header">
+            <div class="header-title">
+                <a href="index.html">PERSÖN AI Docs</a>
+            </div>
+            <nav class="header-nav">
+            </nav>
+        </header>
+
+        <!-- Main Content Area (Scrollable) -->
+        <main class="main-content-wrapper">
+            <div class="main-content">
+                <section id="introduction">
+                    <h1>1. Introduction to PERSÖN AI</h1>
+                    <p>Welcome to the official documentation for PERSÖN AI! This guide will help you understand the project's purpose, set it up, and explore its features.</p>
+                    <p>PERSÖN AI is designed to solve complex problems by providing a robust and scalable solution for data processing and visualization. We aim to empower users with powerful tools and intuitive interfaces.</p>
+                    <p>This documentation is continuously updated. If you find any discrepancies or have suggestions, please feel free to <a href="#">contact us</a> or contribute to the project on <a href="https://github.com/YourUsername/PERSÖN-AI" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+                    <img src="https://via.placeholder.com/600x300?text=PERS%C3%96N+AI+Overview+Image" alt="Project Overview">
+                    <p><i>Figure 1.1: A high-level overview of the project's architecture.</i></p>
+                </section>
+
+                <section id="getting-started">
+                    <h1>2. Getting Started</h1>
+                    <p>This section will walk you through the initial setup and help you get PERSÖN AI up and running on your local machine.</p>
+
+                    <h2 id="prerequisites">2.1. Prerequisites</h2>
+                    <p>Before you begin, ensure you have the following software installed:</p>
+                    <ul>
+                        <li>Python 3.8+</li>
+                        <li>TensorFlow (for the provided `.h5` model)</li>
+                        <li>OpenCV</li>
+                        <li><code>pip</code> (Python package installer)</li>
+                        <li>Git</li>
+                        <li>CUDA (for GPU acceleration, highly recommended for performance)</li>
+                    </ul>
+                    <p>You can check your Python version by running:</p>
+                    <pre><code>python --version</code></pre>
+
+                    <h2 id="installation">2.2. Installation</h2>
+                    <p>Follow these steps to install the project dependencies:</p>
+                    <ol>
+                        <li>Clone the repository:
+                            <pre><code>git clone https://github.com/YourUsername/PERSÖN-AI.git
+cd PERSÖN-AI</code></pre>
+                        </li>
+                        <li>Create a virtual environment (recommended):
+                            <pre><code>python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`</code></pre>
+                        </li>
+                        <li>Install dependencies:
+                            <pre><code>pip install -r requirements.txt</code></pre>
+                        </li>
+                        <li>Place your provided `persoen_ai_model.h5` file into the `models/` directory. Create the `models/` directory if it doesn't exist.
+                            <pre><code>mkdir -p models
+# Then, manually copy your persoen_ai_model.h5 into the models/ folder</code></pre>
+                        </li>
+                    </ol>
+
+                    <h2 id="running-first-example">2.3. Running Your First Example</h2>
+                    <p>To run a simple example, execute the following command:</p>
+                    <pre><code>python main.py --source_type webcam --camera_id 0</code></pre>
+                    <p>This will typically start a real-time feed from your default webcam (camera ID 0). A window will pop up showing the camera feed with detected individuals. You can also specify a video file:</p>
+                    <pre><code>python main.py --source_type video --video_path path/to/your/video.mp4</code></pre>
+                    <p>Here's a small code snippet demonstrating a basic function call within the model's logic (conceptual):</p>
+                    <pre><code class="language-python">from persoen_ai.model import load_model, recognize_person
+
+# Load your pre-trained model
+model = load_model("models/persoen_ai_model.h5")
+
+# Imagine capturing a frame from a camera
+# frame = get_camera_frame()
+
+# recognized_id = recognize_person(model, frame)
+# if recognized_id:
+#     print(f"Recognized person: {recognized_id}")
+# else:
+#     print("No recognized person in frame.")
+</code></pre>
+                </section>
+
+                <section id="core-concepts">
+                    <h1>3. Core Concepts</h1>
+                    <p>Delve deeper into the fundamental concepts that underpin PERSÖN AI.</p>
+
+                    <h2 id="architecture">3.1. Architecture Overview</h2>
+                    <p>The model utilizes a robust Convolutional Neural Network (CNN) architecture optimized for real-time inference on security camera streams. Key components include:</p>
+                    <ul>
+                        <li>**Pre-processing Module:** Handles frame normalization, resizing, and initial feature extraction.</li>
+                        <li>**Detection Head:** Identifies bounding boxes around human subjects.</li>
+                        <li>**Recognition Head:** Extracts unique features (embeddings) from detected subjects and compares them against a database of known individuals.</li>
+                    </ul>
+
+                    <h2 id="data-models">3.2. Data Models</h2>
+                    <p>Understanding the data models is crucial for effective interaction with the project's API. Here's a simplified representation of the `KnownPerson` model (for your database integration):</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>id</code></td>
+                                <td><code>UUID</code></td>
+                                <td>Unique identifier for the known person.</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td><code>name</code></td>
+                                <td><code>String</code></td>
+                                <td>Name of the known person.</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td><code>embedding</code></td>
+                                <td><code>Array&lt;Float&gt;</code></td>
+                                <td>Feature vector generated by the AI model.</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td><code>last_seen</code></td>
+                                <td><code>DateTime</code></td>
+                                <td>Timestamp of the last recognition.</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="advanced-topics">
+                    <h1>4. Advanced Topics</h1>
+                    <p>This section covers more advanced configurations, performance tuning, and integration with other systems.</p>
+                    <h3>4.1 Customizing Recognition Thresholds</h3>
+                    <p>Learn how to adjust the <code>recognition_threshold</code> in <code>config.yaml</code> to fine-tune the model's sensitivity for recognizing individuals. A higher threshold means stricter matching criteria.</p>
+                </section>
+
+                <section id="troubleshooting">
+                    <h1>5. Troubleshooting</h1>
+                    <p>Encountering issues? This guide helps you diagnose and resolve common problems.</p>
+                    <p>If you're facing connection issues with your camera, ensure the correct camera ID or RTSP URL is provided in the `main.py` arguments. For `h5` model loading errors, verify the `persoen_ai_model.h5` file is correctly placed in the `models/` directory and is not corrupted.</p>
+                </section>
+
+                <section id="faq">
+                    <h1>6. Frequently Asked Questions</h1>
+                    <p>Find answers to common questions about PERSÖN AI.</p>
+                    <h4>Q: How accurate is the recognition?</h4>
+                    <p>A: The accuracy depends on the quality of your training data and the environmental conditions. Under optimal conditions, PERSÖN AI can achieve very high recognition rates. We recommend using diverse and high-quality images for training your specific recognition database.</p>
+                </section>
+
+                <section id="contributing">
+                    <h1>7. Contributing</h1>
+                    <p>We welcome contributions from the community! Please read our <a href="#">contribution guidelines</a> before submitting a pull request.</p>
+                    <p>Feel free to open issues for bug reports, feature requests, or questions.</p>
+                </section>
+
+                <section id="license">
+                    <h1>8. License</h1>
+                    <p>PERSÖN AI is distributed under the MIT License. See the <a href="#">LICENSE</a> file for more details.</p>
+                </section>
+
+                <section id="about">
+                    <h1>About</h1>
+                    <p>PERSÖN AI is developed by [Your Name/Organization] with the goal of enhancing security camera capabilities through advanced human recognition.</p>
+                    <p>For inquiries, please contact [your.email@example.com].</p>
+                </section>
+
+                <section id="api-reference">
+                    <h1>API Reference</h1>
+                    <p>This section provides detailed documentation for integrating PERSÖN AI into your existing systems via its programmatic interfaces.</p>
+                    <p>Details about the functions, classes, and expected inputs/outputs will be listed here.</p>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get elements
+            const mainContentWrapper = document.querySelector('.main-content-wrapper');
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const sidebarLinks = sidebarNav.querySelectorAll('a');
+            const sections = document.querySelectorAll('.main-content section');
+            const headerHeight = document.querySelector('.header').offsetHeight; // Get the header height dynamically
+            const scrollOffset = headerHeight + 20; // Additional offset for comfortable viewing of section titles
+
+            console.log('DOM Content Loaded. Header Height:', headerHeight); // Debugging
+
+            // Function to remove all active classes from sidebar
+            const removeAllActiveClasses = () => {
+                sidebarNav.querySelectorAll('li').forEach(li => { // Select all LIs to remove classes
+                    li.classList.remove('active', 'active-parent', 'has-active-child');
+                });
+            };
+
+            // Function to set active class based on current scroll position
+            const highlightSidebarOnScroll = () => {
+                const currentScrollPos = mainContentWrapper.scrollTop;
+                // console.log('Scrolling. Current Scroll Pos:', currentScrollPos); // Debugging
+
+                let currentActiveSectionId = null;
+
+                // Loop through sections to find which one is currently in view
+                // Iterate backwards to prioritize sections higher up when multiple might be partially visible
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    const sectionRectTopRelativeToWrapper = section.getBoundingClientRect().top - mainContentWrapper.getBoundingClientRect().top;
+
+                    // Check if the current scroll position is within the section bounds,
+                    // accounting for the fixed header
+                    if (sectionRectTopRelativeToWrapper <= currentScrollPos + scrollOffset &&
+                        sectionRectTopRelativeToWrapper + section.offsetHeight > currentScrollPos + scrollOffset) {
+                        currentActiveSectionId = section.id;
+                        break; // Found the active section, break loop
+                    }
+                }
+
+                removeAllActiveClasses(); // Clear existing active states
+
+                if (currentActiveSectionId) {
+                    // Find the sidebar link corresponding to the active section
+                    const activeLink = document.querySelector(`#sidebar-nav a[href="#${currentActiveSectionId}"]`);
+
+                    if (activeLink) {
+                        const activeLi = activeLink.parentElement;
+                        activeLi.classList.add('active'); // Add active to the specific li
+
+                        // Handle nested active states: if it's a sub-link, also highlight its parent chapter
+                        let parentLi = activeLi.closest('ul')?.parentElement; // Find the li parent of the ul (the main chapter li)
+
+                        // Traverse up to find all parent 'li's that have a 'data-section-id' (i.e., main chapters)
+                        while (parentLi && parentLi.tagName === 'LI' && parentLi.dataset.sectionId) {
+                            if (parentLi.dataset.sectionId !== currentActiveSectionId) {
+                                parentLi.classList.add('has-active-child'); // Indicates it has an active child
+                            }
+                            parentLi = parentLi.closest('ul')?.parentElement; // Move up to the next parent li
+                        }
+                    }
+                }
+            };
+
+            // Initial highlight on page load
+            highlightSidebarOnScroll();
+
+            // Add scroll event listener to the main content wrapper
+            let isScrolling;
+            mainContentWrapper.addEventListener('scroll', () => {
+                window.clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    highlightSidebarOnScroll();
+                }, 66); // Throttle delay
+            });
+
+            // Add click event listener to sidebar links for smooth scrolling
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Only prevent default if it's an internal link (starts with #)
+                    if (link.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+
+                        const targetId = link.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+
+                        if (targetSection) {
+                            const targetScrollPos = targetSection.offsetTop - headerHeight;
+
+                            mainContentWrapper.scrollTo({
+                                top: targetScrollPos,
+                                behavior: 'smooth'
+                            });
+
+                            // Update highlight immediately on click
+                            removeAllActiveClasses();
+                            const clickedLi = link.parentElement;
+                            clickedLi.classList.add('active');
+
+                            let parentLi = clickedLi.closest('ul')?.parentElement;
+                            while (parentLi && parentLi.tagName === 'LI' && parentLi.dataset.sectionId) {
+                                if (parentLi.dataset.sectionId !== targetId.substring(1)) {
+                                    parentLi.classList.add('has-active-child');
+                                }
+                                parentLi = parentLi.closest('ul')?.parentElement;
+                            }
+
+                            targetSection.focus({ preventScroll: true });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
